@@ -9,6 +9,7 @@ from PIL import Image
 from sympy import symbols, Eq, solve
 import torch
 import torchvision as tv
+from pyvi import ViTokenizer, ViPosTagger,ViUtils
 
 def FindLinearEquation(label1,label2):
   ass,bss = symbols('asd,bsd')
@@ -132,4 +133,5 @@ def wordDetect(modelPath,img):
     config['predictor']['beamsearch']=True
     imageP=predictedImage(config)
     sentence=imageP.detect(results,img)
-    return sentence
+    sepSentence=ViTokenizer.tokenize(' '.join(sentence))
+    return sepSentence
