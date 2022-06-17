@@ -2,7 +2,6 @@ from vietocr.tool.predictor import Predictor
 from vietocr.tool.config import Cfg
 import glob
 from PIL import Image
-import cv2
 from google.colab.patches import cv2_imshow
 import cv2
 import torch
@@ -121,15 +120,15 @@ class predictedImage():
 
 
 def wordDetect(modelPath,img):
-    # DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-    DEVICE='cpu'
+    DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
+    # DEVICE='cpu'
     model = torch.hub.load('ultralytics/yolov5', 'custom',path=modelPath,device=DEVICE)
     results = model(img, size=640)
     config = Cfg.load_config_from_name('vgg_transformer')
     # config['weights'] = './weights/transformerocr.pth'
     config['weights'] = 'https://drive.google.com/uc?id=13327Y1tz1ohsm5YZMyXVMPIOjoOA0OaA'
     config['cnn']['pretrained']=True
-    config['device'] = 'cuda:0'
+    config['device'] = DEVICE
     config['predictor']['beamsearch']=True
     imageP=predictedImage(config)
     sentence=imageP.detect(results,img)
