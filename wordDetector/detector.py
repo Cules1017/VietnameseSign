@@ -8,7 +8,8 @@ import cv2
 import torch
 from PIL import Image
 from sympy import symbols, Eq, solve
-
+import torch
+import torchvision as tv
 
 def FindLinearEquation(label1,label2):
   ass,bss = symbols('asd,bsd')
