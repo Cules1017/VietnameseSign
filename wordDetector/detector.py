@@ -120,10 +120,10 @@ class predictedImage():
     return fullSentences
 
 
-def wordDetect(modelPath,img):
+def wordDetect(img):
     DEVICE = "cuda:0" if torch.cuda.is_available() else "cpu"
     # DEVICE='cpu'
-    model = torch.hub.load('ultralytics/yolov5', 'custom',path=modelPath,device=DEVICE)
+    model = torch.hub.load('ultralytics/yolov5', 'custom',path='../model/word-detect-model-yolov5.pt',device=DEVICE)
     results = model(img, size=640)
     config = Cfg.load_config_from_name('vgg_transformer')
     # config['weights'] = './weights/transformerocr.pth'
