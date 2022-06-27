@@ -60,7 +60,7 @@ def onSameRow2(firstWord,nearestWord):
     coef=i[0]
     biasB=i[1]
   angle=np.arctan(float(coef))/np.pi*180
-  if (angle <20) & (angle >-20) and (nearestWord[0]>firstWord[0]) and (firstWord[3]*1.3>nearestWord[3]) and (firstWord[3]*0.8<nearestWord[3]):
+  if (angle <20) & (angle >-20) and (nearestWord[0]>firstWord[0]) and (firstWord[3]*1.2>nearestWord[3]) and (firstWord[3]*0.8<nearestWord[3]):
     return True
   return False
 
