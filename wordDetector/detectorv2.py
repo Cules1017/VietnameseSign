@@ -52,8 +52,8 @@ def onSameRow(label,firstWord,endWord):
     return True
   # print(coef,biasB)
   return False
-def onSameRow2(firstWord,nearestWord,val1,val2):
-  print(val1,val2,firstWord[0],nearestWord[0])
+def onSameRow2(firstWord,nearestWord):
+#   print(val1,val2,firstWord[0],nearestWord[0])
   bisa=FindLinearEquation(firstWord,nearestWord)
   # print(bisa)
   for i in bisa[1]:
@@ -130,8 +130,8 @@ class predictedImage():
                   reAssign=True
             # print('attemp:',trys)
             if (distanceBetween(curWord[0],curWord[1],closestPoint[0],closestPoint[1])>0) & (reAssign==True):
-              # if onSameRow2(curWord,closestPoint):
-              if onSameRow2(curWord,closestPoint,self.predictWord(convertToXYXY(curWord),imgs),self.predictWord(convertToXYXY(closestPoint),imgs)):
+              if onSameRow2(curWord,closestPoint):
+#               if onSameRow2(curWord,closestPoint,self.predictWord(convertToXYXY(curWord),imgs),self.predictWord(convertToXYXY(closestPoint),imgs)):
                 rowsw.append(curWord)
                 curWord=closestPoint
                 curWIndex=closestPointIndex
@@ -168,7 +168,7 @@ class predictedImage():
         arow=[]
         for i in range(len(rowsw)):
           arow.append(self.predictWord(convertToXYXY(rowsw[i]),imgs))
-        print('row',arow)
+#         print('row',arow)
         fullSentences.append(arow)
       else: 
         fullSentences.append(self.predictWord(convertToXYXY(listTemp[0]),imgs))
