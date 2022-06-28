@@ -52,15 +52,16 @@ def onSameRow(label,firstWord,endWord):
     return True
   # print(coef,biasB)
   return False
-def onSameRow2(firstWord,nearestWord):
-  # print(val1,val2,firstWord[0],nearestWord[0])
+def onSameRow2(firstWord,nearestWord,val1,val2):
+  print(val1,val2,firstWord[0],nearestWord[0])
   bisa=FindLinearEquation(firstWord,nearestWord)
   # print(bisa)
   for i in bisa[1]:
     coef=i[0]
     biasB=i[1]
   angle=np.arctan(float(coef))/np.pi*180
-  if (angle <20) & (angle >-20) and (nearestWord[0]>firstWord[0]) and (firstWord[3]*1.2>nearestWord[3]) and (firstWord[3]*0.8<nearestWord[3]):
+  if (angle <10) & (angle >-10) and (nearestWord[0]>firstWord[0]) and (firstWord[3]*1.5>nearestWord[3]) and (firstWord[3]*0.5<nearestWord[3]):
+    print('true')
     return True
   return False
 
