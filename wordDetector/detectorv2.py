@@ -53,14 +53,15 @@ def onSameRow(label,firstWord,endWord):
   # print(coef,biasB)
   return False
 def onSameRow2(firstWord,nearestWord):
-  # print(val1,val2,firstWord[0],nearestWord[0])
+#   print(val1,val2,firstWord[0],nearestWord[0])
   bisa=FindLinearEquation(firstWord,nearestWord)
   # print(bisa)
   for i in bisa[1]:
     coef=i[0]
     biasB=i[1]
   angle=np.arctan(float(coef))/np.pi*180
-  if (angle <20) & (angle >-20) and (nearestWord[0]>firstWord[0]) and (firstWord[3]*1.2>nearestWord[3]) and (firstWord[3]*0.8<nearestWord[3]):
+  if (angle <10) & (angle >-10) and (nearestWord[0]>firstWord[0]) and (firstWord[3]*1.5>nearestWord[3]) and (firstWord[3]*0.5<nearestWord[3]):
+    print('true')
     return True
   return False
 
@@ -90,13 +91,22 @@ class predictedImage():
         temp=[]
         minDisTL=10000
         minDisTR=10000
+        minTop=10000
         for i in range(len(listTemp)):
-          if(minDisTL>distanceToTopLeft(listTemp[i][0],listTemp[i][1])):
-            minDisTL=distanceToTopLeft(listTemp[i][0],listTemp[i][1])
-            firstWord=convertToXYXY(listTemp[i])
-            firstWordc=listTemp[i]
+          if convertToXYXY(listTemp[i])[1]<minTop:
+            minTop=convertToXYXY(listTemp[i])[1]
+            minTopc=convertToXYXY(listTemp[i])
+            minTopIndex=i
+        listFirstLine=[]
+        for i in range(len(listTemp)):
+          if listTemp[i][1]<minTopc[3]:
+            listFirstLine.append(listTemp[i])
+        for i in range(len(listFirstLine)):
+          if(minDisTL>distanceToTopLeft(listFirstLine[i][0],listFirstLine[i][1])):
+            minDisTL=distanceToTopLeft(listFirstLine[i][0],listFirstLine[i][1])
+            firstWord=convertToXYXY(listFirstLine[i])
+            firstWordc=listFirstLine[i]
             firstWordIndex=i
-
         closestDis=10000
         curWord=firstWordc
         curWIndex=firstWordIndex
@@ -121,7 +131,7 @@ class predictedImage():
             # print('attemp:',trys)
             if (distanceBetween(curWord[0],curWord[1],closestPoint[0],closestPoint[1])>0) & (reAssign==True):
               if onSameRow2(curWord,closestPoint):
-              # if onSameRow2(curWord,closestPoint,self.predictWord(convertToXYXY(curWord),imgs),self.predictWord(convertToXYXY(closestPoint),imgs)):
+#               if onSameRow2(curWord,closestPoint,self.predictWord(convertToXYXY(curWord),imgs),self.predictWord(convertToXYXY(closestPoint),imgs)):
                 rowsw.append(curWord)
                 curWord=closestPoint
                 curWIndex=closestPointIndex
@@ -158,13 +168,14 @@ class predictedImage():
         arow=[]
         for i in range(len(rowsw)):
           arow.append(self.predictWord(convertToXYXY(rowsw[i]),imgs))
-        # print('row',arow)
+#         print('row',arow)
         fullSentences.append(arow)
       else: 
         fullSentences.append(self.predictWord(convertToXYXY(listTemp[0]),imgs))
         listTemp = []
     cv2_imshow(results.render()[0])
     return fullSentences
+      
 
 
 
