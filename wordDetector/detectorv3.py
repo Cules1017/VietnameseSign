@@ -122,7 +122,7 @@ class LSTM(torch.nn.Module):
     def evaluate(self,x):
 
         x = self.expandEnc(x)
-        print(x.shape)
+        # print(x.shape)
 
         outenc,(hidden,cell)=self.enclstm(x)
         
@@ -203,17 +203,17 @@ class predictedImage():
       scaledData.append(scaler.transform(listNP[i]).tolist())
 
     scaledData=np.array(padding(scaledData,'data'))
-    print(scaledData)
+    # print(scaledData)
     x=torch.tensor(scaledData,dtype=torch.float32).transpose(1,0).to(self.DEVICE)
-    print(x.shape)
+    # print(x.shape)
     predRes=self.arrangeModel.evaluate(x)
     sorted=predRes
-    print(sorted)
+    # print(sorted)
     SENTENCES=[]
     for i in range(senLen):
       if sorted[i] <senLen :
         SENTENCES.append(self.predictWord(convertToXYXY(listCenter[sorted[i]-1]),imgs))
-    print(SENTENCES)
+    # print(SENTENCES)
     cv2_imshow(results.render()[0])
     return SENTENCES
       
