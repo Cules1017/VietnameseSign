@@ -69,34 +69,45 @@ class Attn(torch.nn.Module):
 
 
 class LSTM(torch.nn.Module):
-    def __init__(self, seqLen ,DEVICE):
+    def __init__(self, seqLen):
         super(LSTM, self).__init__()
-        self.DEVICE = DEVICE
-        self.seqLen = seqLen
-        self.dropout = torch.nn.Dropout(0.3)
+        self.seqLen=seqLen
+        self.Relu = torch.nn.ReLU()
+        self.dropout = torch.nn.Dropout(0.2)
         self.expandEnc = torch.nn.Linear(4, 256)
-        
-        self.enclstm = torch.nn.LSTM(256,516,2,dropout=0.5,bidirectional=True)
+        # self.expandEnc2 = torch.nn.Conv1d(32, 64, 3, stride=1, padding=1)
+        # self.expandEnc3 = torch.nn.Conv1d(64, 128, 3, stride=1, padding=1)
 
-        self.declstm = torch.nn.LSTM(self.seqLen,516,2,dropout=0.5,bidirectional=True)
-        self.decout = torch.nn.Linear(1032, self.seqLen)
+        self.enclstm = torch.nn.LSTM(256,512,2,dropout=0.5,bidirectional=True)
+
+        self.declstm = torch.nn.LSTM(self.seqLen,512,2,dropout=0.5,bidirectional=True)
+        self.decout = torch.nn.Linear(1024, self.seqLen)
     
 
 
 
-        self.concat = torch.nn.Linear(1032 * 2, 1032)
+        self.concat = torch.nn.Linear(1024 * 2, 1024)
         # self.out = torch.nn.Linear(256, len(vocabidx_y))
 
-        self.attn = Attn('concat', 1032)
+        self.attn = Attn('concat', 1024)
 
 
     def forward(self,x,y,label):
         x = self.expandEnc(x)
+        # x = self.dropout(x)
+
+        # x = self.Relu(self.expandEnc2(x))
+        # x = self.dropout(x)
+        # x = self.Relu(self.expandEnc3(x))
+        # x = self.dropout(x)
+
+        # x = x.permute(2,0,1)
+
         outenc,(hidden,cell) = self.enclstm(x)
         # print(outenc.shape,hidden.shape,cell.shape)
         n_y=y.shape[0]
-        outputs = torch.zeros(n_y,x.shape[1],self.seqLen).to(self.DEVICE)
-        loss = torch.tensor(0.,dtype=torch.float32).to(self.DEVICE)
+        outputs = torch.zeros(n_y,x.shape[1],self.seqLen).to(DEVICE)
+        loss = torch.tensor(0.,dtype=torch.float32).to(DEVICE)
         for i in range(n_y):
             input = y[i]
             input = input.unsqueeze(0)
@@ -122,11 +133,17 @@ class LSTM(torch.nn.Module):
     def evaluate(self,x):
 
         x = self.expandEnc(x)
-        # print(x.shape)
+        # x = self.dropout(x)
+        # x = self.Relu(self.expandEnc2(x))
+        # x = self.dropout(x)
+        # x = self.Relu(self.expandEnc3(x))
+        # x = self.dropout(x)
+
+        # x = x.permute(2,0,1)
 
         outenc,(hidden,cell)=self.enclstm(x)
         
-        y = torch.zeros((1,1,self.seqLen)).to(self.DEVICE)
+        y = torch.zeros((1,1,self.seqLen)).to(DEVICE)
         pred=[]
         for i in range(self.seqLen):
 
