@@ -69,8 +69,9 @@ class Attn(torch.nn.Module):
 
 
 class LSTM(torch.nn.Module):
-    def __init__(self, seqLen):
+    def __init__(self, seqLen ,DEVICE):
         super(LSTM, self).__init__()
+        self.DEVICE = DEVICE
         self.seqLen=seqLen
         self.Relu = torch.nn.ReLU()
         self.dropout = torch.nn.Dropout(0.2)
@@ -106,8 +107,8 @@ class LSTM(torch.nn.Module):
         outenc,(hidden,cell) = self.enclstm(x)
         # print(outenc.shape,hidden.shape,cell.shape)
         n_y=y.shape[0]
-        outputs = torch.zeros(n_y,x.shape[1],self.seqLen).to(DEVICE)
-        loss = torch.tensor(0.,dtype=torch.float32).to(DEVICE)
+        outputs = torch.zeros(n_y,x.shape[1],self.seqLen).to(self.DEVICE)
+        loss = torch.tensor(0.,dtype=torch.float32).to(self.DEVICE)
         for i in range(n_y):
             input = y[i]
             input = input.unsqueeze(0)
@@ -143,7 +144,7 @@ class LSTM(torch.nn.Module):
 
         outenc,(hidden,cell)=self.enclstm(x)
         
-        y = torch.zeros((1,1,self.seqLen)).to(DEVICE)
+        y = torch.zeros((1,1,self.seqLen)).to(self.DEVICE)
         pred=[]
         for i in range(self.seqLen):
 
