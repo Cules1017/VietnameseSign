@@ -246,3 +246,5 @@ class wordDetect():
       sepSentence=ViTokenizer.tokenize(newSen)
       return sepSentence
     return ''
+
+ 
