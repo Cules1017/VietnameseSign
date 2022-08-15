@@ -192,8 +192,10 @@ class predictedImage():
     textPredict=self.detector.predict(cImg)
     # print(textPredict)
     return textPredict
-  def detect(self,results,imgs):
+  def detect(self,results,imgs, display = False):
     listCenter=results.xywh[0]
+    if len(listCenter > 20):
+      listCenter = listCenter[0:20]
     senLen=listCenter.shape[0]
     listNP=[np.delete(listCenter.cpu().numpy(),[4,5],1).tolist()]
     scaledData=[]
@@ -214,7 +216,8 @@ class predictedImage():
       if sorted[i] <senLen :
         SENTENCES.append(self.predictWord(convertToXYXY(listCenter[sorted[i]-1]),imgs))
     # print(SENTENCES)
-    cv2_imshow(results.render()[0])
+    if display :
+      cv2_imshow(results.render()[0])
     return SENTENCES
       
 class wordDetect():
@@ -231,11 +234,15 @@ class wordDetect():
     self.config['predictor']['beamsearch']=True
     self.imageP=predictedImage(self.config,sortModelPath,self.DEVICE)
 
-  def detect(self,img):
+  def detect(self,img ,display = False):
     results = self.model(img, size=640)
-    sentence = self.imageP.detect(results,img)
-    newSen=''
-    for sen in sentence:
-      newSen=newSen+sen+' '
-    sepSentence=ViTokenizer.tokenize(newSen)
-    return sepSentence
+    # print('len word :',len(results.xywh[0]))
+
+    if len(results.xywh[0]) > 0 :
+      sentence = self.imageP.detect(results,img,display = display)
+      newSen=''
+      for sen in sentence:
+        newSen=newSen+sen+' '
+      sepSentence=ViTokenizer.tokenize(newSen)
+      return sepSentence
+    return ''
