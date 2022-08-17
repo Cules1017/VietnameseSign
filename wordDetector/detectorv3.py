@@ -261,7 +261,7 @@ def onSameRow2(firstWord,nearestWord):
     biasB=i[1]
   angle=np.arctan(float(coef))/np.pi*180
   if (angle <10) & (angle >-10) and (nearestWord[0]>firstWord[0]) and (firstWord[3]*1.5>nearestWord[3]) and (firstWord[3]*0.5<nearestWord[3]):
-    print('true')
+    # print('true')
     return True
   return False
 
@@ -373,7 +373,7 @@ class pI():
       else: 
         fullSentences.append(self.predictWord(convertToXYXY(listTemp[0]),imgs))
         listTemp = []
-    cv2_imshow(results.render()[0])
+    # cv2_imshow(results.render()[0])
     return fullSentences
 class wordDetect():
   def __init__(self,modelPath,sortModelPath):
