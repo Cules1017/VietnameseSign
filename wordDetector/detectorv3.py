@@ -9,6 +9,7 @@ from google.colab.patches import cv2_imshow
 import torch
 from PIL import Image
 from pyvi import ViTokenizer, ViPosTagger,ViUtils
+from sympy import symbols, Eq, solve
 
 
 def padding(data,type):
