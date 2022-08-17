@@ -1,6 +1,5 @@
 import torch
 import torch.nn.functional as F
-import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 import numpy as np
 from vietocr.tool.predictor import Predictor

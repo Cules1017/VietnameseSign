@@ -6,7 +6,6 @@ from PIL import Image
 from google.colab.patches import cv2_imshow
 import cv2
 import torch
-from sympy import symbols, Eq, solve
 import torchvision as tv
 from pyvi import ViTokenizer, ViPosTagger,ViUtils
 import numpy as np
