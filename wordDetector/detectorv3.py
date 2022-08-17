@@ -10,6 +10,8 @@ import torch
 from PIL import Image
 from pyvi import ViTokenizer, ViPosTagger,ViUtils
 
+from detectorv2 import predictedImage as pI
+
 def padding(data,type):
   if type=='data':
     pad=[0,0,0,0]
@@ -233,18 +235,27 @@ class wordDetect():
     self.config['device'] = self.DEVICE
     self.config['predictor']['beamsearch']=True
     self.imageP=predictedImage(self.config,sortModelPath,self.DEVICE)
+    self.imageP2=pI(self.config)
 
   def detect(self,img ,display = False):
     results = self.model(img, size=640)
     # print('len word :',len(results.xywh[0]))
 
     if len(results.xywh[0]) > 0 :
-      sentence = self.imageP.detect(results,img,display = display)
-      newSen=''
-      for sen in sentence:
-        newSen=newSen+sen+' '
-      sepSentence=ViTokenizer.tokenize(newSen)
-      return sepSentence
+      if len(results.xywh[0]) > 10 :
+        sentence=self.imageP2.detect(results,img)
+        newSen=''
+        for sen in sentence:
+          newSen=newSen+' '.join(sen)+' '
+        sepSentence=ViTokenizer.tokenize(newSen)
+        return sepSentence
+      else:
+        sentence = self.imageP.detect(results,img,display = display)
+        newSen=''
+        for sen in sentence:
+          newSen=newSen+sen+' '
+        sepSentence=ViTokenizer.tokenize(newSen)
+        return sepSentence
     return ''
 
  
