@@ -6,11 +6,10 @@ from PIL import Image
 from google.colab.patches import cv2_imshow
 import cv2
 import torch
-from PIL import Image
 from sympy import symbols, Eq, solve
-import torch
 import torchvision as tv
 from pyvi import ViTokenizer, ViPosTagger,ViUtils
+import numpy as np
 
 def FindLinearEquation(label1,label2):
   ass,bss = symbols('asd,bsd')
@@ -21,15 +20,6 @@ def FindLinearEquation(label1,label2):
 def convertToXYXY(label):
   xyx=torch.tensor([label[0]-label[2]/2,label[1]-label[3]/2,label[0]+label[2]/2,label[1]+label[3]/2,label[4],label[5]],dtype=torch.int32)
   return xyx
-import numpy as np
-from vietocr.tool.predictor import Predictor
-from vietocr.tool.config import Cfg
-import glob
-from PIL import Image
-import cv2
-from google.colab.patches import cv2_imshow
-import torch
-from PIL import Image
 def distanceToTopLeft(x,y):
   dis=( x**2 + y**2 )**(1/2)
   return dis
